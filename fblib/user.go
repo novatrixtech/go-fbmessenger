@@ -49,6 +49,5 @@ func GetUserData(senderID string) (*fbmodelsend.User, error) {
 		return nil, err
 	}
 
-	fmt.Println(fbUser.Gender)
 	return fbUser, nil
 }
