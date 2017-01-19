@@ -18,7 +18,7 @@ func GetUserData(senderID string) (*fbmodelsend.User, error) {
 	url := fmt.Sprintf("https://graph.facebook.com/v2.8/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s",
 		senderID,
 		fbAccessToken)
-	fmt.Println("[GetUserData] URL: " + url)
+	//fmt.Println("[GetUserData] URL: " + url)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func GetUserData(senderID string) (*fbmodelsend.User, error) {
 	}
 
 	respBody := string(data)
-	fmt.Println("[GetUserData] Response: " + respBody)
+	//fmt.Println("[GetUserData] Response: " + respBody)
 
 	fbUser := new(fbmodelsend.User)
 
