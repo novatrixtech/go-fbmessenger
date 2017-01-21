@@ -39,7 +39,7 @@ func GetUserData(senderID string) (*fbmodelsend.User, error) {
 		return nil, err
 	}
 
-	respBody := string(data)
+	//respBody := string(data)
 	//fmt.Println("[GetUserData] Response: " + respBody)
 
 	fbUser := new(fbmodelsend.User)
