@@ -33,8 +33,14 @@ type FacebookMessageRecieved struct {
 				AppID       int    `json:"app_id"`
 				Attachments []struct {
 					Type    string `json:"type"`
+					Title   string `json:"title"`
+					URL     string `json:"url"`
 					Payload struct {
-						URL string `json:"url"`
+						URL         string `json:"url"`
+						Coordinates struct {
+							Latitude  float32 `json:"lat"`
+							Longitude float32 `json:"long"`
+						} `json:"coordinates"`
 					} `json:"payload"`
 				} `json:"attachments"`
 			} `json:"message"`
