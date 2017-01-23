@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/davecgh/go-spew/spew"
@@ -143,6 +144,33 @@ func SendShareMessage(text string, subtitle string, recipient string) {
 	elements := []*fbmodelsend.TemplateElement{msgElement}
 	SendGenericTemplateMessage(elements, recipient)
 
+}
+
+/*
+SendQuickReply sends small messages in order to get small and quick answers from the users
+*/
+func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient string) {
+	msg := new(fbmodelsend.Letter)
+	msg.Recipient.ID = recipient
+	msg.Message.Text = text
+	msg.Message.QuickReplies = options
+	//log.Printf("[SendQuickReply] Enviado: [%s]\n", text)
+	if err := sendMessage(msg, recipient); err != nil {
+		log.Print("[SendQuickReply] Error during the call to Facebook to send the text message: " + err.Error())
+		return
+	}
+}
+
+/*
+SendAskUserLocation sends small message asking the users their location
+*/
+func SendAskUserLocation(text string, recipient string) {
+	qr := new(fbmodelsend.QuickReply)
+	qr.ContentType = "location"
+
+	arrayQr := []*fbmodelsend.QuickReply{qr}
+
+	SendQuickReply(text, arrayQr, recipient)
 }
 
 /*
