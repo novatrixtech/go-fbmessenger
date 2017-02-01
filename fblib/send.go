@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -198,7 +197,7 @@ func sendMessage(message interface{}, recipient string) error {
 
 	client := &http.Client{}
 
-	fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
+	//fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
 
 	respFb, err := client.Do(reqFb)
 	if err != nil {
@@ -207,9 +206,9 @@ func sendMessage(message interface{}, recipient string) error {
 	}
 	defer respFb.Body.Close()
 
-	fmt.Println("[sendMessage] Response status: ", respFb.Status)
-	bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
-	fmt.Println("[sendMessage] Response Body from Facebook: ", string(bodyFromFb))
+	//fmt.Println("[sendMessage] Response status: ", respFb.Status)
+	//bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
+	//fmt.Println("[sendMessage] Response Body from Facebook: ", string(bodyFromFb))
 
 	return nil
 }
