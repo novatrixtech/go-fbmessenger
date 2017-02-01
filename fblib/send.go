@@ -198,7 +198,7 @@ func sendMessage(message interface{}, recipient string) error {
 
 	client := &http.Client{}
 
-	//fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
+	fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
 
 	respFb, err := client.Do(reqFb)
 	if err != nil {
