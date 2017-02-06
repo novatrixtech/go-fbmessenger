@@ -207,8 +207,9 @@ func sendMessage(message interface{}, recipient string) error {
 	}
 	defer respFb.Body.Close()
 
-	fmt.Println("[sendMessage] Response status: ", respFb.Status)
 	bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
+	status = string(bodyFromFb)
+	fmt.Println("[sendMessage] Response status: ", respFb.Status)
 	fmt.Println("[sendMessage] Response Body from Facebook: ", string(bodyFromFb))
 
 	return nil
