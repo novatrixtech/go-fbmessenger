@@ -213,6 +213,7 @@ func sendMessage(message interface{}, recipient string) error {
 		fmt.Printf("[sendMessage] Response status code: [%d]\n", respFb.StatusCode)
 		fmt.Println("[sendMessage] Response status: ", respFb.Status)
 		fmt.Println("[sendMessage] Response Body from Facebook: ", status)
+		fmt.Printf("[sendMessage] Facebook URL Called: [%s]\n", url)
 		fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", string(data))
 	}
 
