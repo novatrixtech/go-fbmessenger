@@ -210,6 +210,7 @@ func sendMessage(message interface{}, recipient string) error {
 	//if respFb.StatusCode < 200 && respFb.StatusCode >= 300 {
 	bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
 	status := string(bodyFromFb)
+	fmt.Printf("[sendMessage] Response status code: [%d]\n", respFb.StatusCode)
 	fmt.Println("[sendMessage] Response status: ", respFb.Status)
 	fmt.Println("[sendMessage] Response Body from Facebook: ", status)
 	fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", string(data))
