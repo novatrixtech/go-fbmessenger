@@ -1,5 +1,5 @@
 # go-fbmessenger
-A set of Go Libs and Structs to be used to build your own Facebook Messenger Bot.
+The Go SDK for Facebook Messenger to build your own Bot.
 
 ## Important
 Defines your Facebook Messenger Access Token calling ```fblib.DefineAccessToken()```

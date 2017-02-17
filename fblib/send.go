@@ -195,6 +195,8 @@ func sendMessage(message interface{}, recipient string) error {
 
 	reqFb, _ := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	reqFb.Header.Set("Content-Type", "application/json")
+	reqFb.Header.Set("Connection", "close")
+	reqFb.Close = true
 
 	client := &http.Client{}
 
