@@ -30,7 +30,7 @@ func SendTextMessage(text string, recipient string) {
 }
 
 /*
-SendImageMessage - Send image message to a recipient on Facebook Messenger
+SendImageMessage - Sends image message to a recipient on Facebook Messenger
 */
 func SendImageMessage(url string, recipient string) {
 	message := new(fbmodelsend.Letter)
@@ -49,7 +49,26 @@ func SendImageMessage(url string, recipient string) {
 }
 
 /*
-SendTypingMessage - Send typing message to user
+SendAudioMessage - Sends audio message to a recipient on Facebook Messenger
+*/
+func SendAudioMessage(url string, recipient string) {
+	message := new(fbmodelsend.Letter)
+
+	attch := new(fbmodelsend.Attachment)
+	attch.AttachmentType = "audio"
+	attch.Payload.URL = url
+	message.Message.Attachment = attch
+
+	message.Recipient.ID = recipient
+
+	if err := sendMessage(message, recipient); err != nil {
+		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the image message: " + err.Error())
+		return
+	}
+}
+
+/*
+SendTypingMessage - Sends typing message to user
 */
 func SendTypingMessage(onoff bool, recipient string) {
 	senderAction := new(fbmodelsend.SenderAction)
