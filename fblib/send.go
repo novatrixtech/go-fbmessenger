@@ -62,7 +62,7 @@ func SendAudioMessage(url string, recipient string) {
 	message.Recipient.ID = recipient
 
 	if err := sendMessage(message, recipient); err != nil {
-		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the image message: " + err.Error())
+		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the audio message: " + err.Error())
 		return
 	}
 }
