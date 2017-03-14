@@ -13,11 +13,11 @@ import (
 GetUserData - Get Facebook User's data.
 It can be obtained after she starts a conversation with Bot
 */
-func GetUserData(senderID string) (*fbmodelsend.User, error) {
+func GetUserData(senderID string, accessToken string) (*fbmodelsend.User, error) {
 
 	url := fmt.Sprintf("https://graph.facebook.com/v2.8/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s",
 		senderID,
-		fbAccessToken)
+		accessToken)
 	//fmt.Println("[GetUserData] URL: " + url)
 
 	req, err := http.NewRequest("GET", url, nil)
