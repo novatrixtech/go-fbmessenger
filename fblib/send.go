@@ -18,12 +18,12 @@ var logLevelDebug = false
 /*
 SendTextMessage - Send text message to a recipient on Facebook Messenger
 */
-func SendTextMessage(text string, recipient string) {
+func SendTextMessage(text string, recipient string, accessToken string) {
 	letter := new(fbmodelsend.Letter)
 	letter.Message.Text = text
 	letter.Recipient.ID = recipient
 
-	if err := sendMessage(letter, recipient); err != nil {
+	if err := sendMessage(letter, recipient, accessToken); err != nil {
 		fmt.Print("[sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
@@ -32,7 +32,7 @@ func SendTextMessage(text string, recipient string) {
 /*
 SendImageMessage - Sends image message to a recipient on Facebook Messenger
 */
-func SendImageMessage(url string, recipient string) {
+func SendImageMessage(url string, recipient string, accessToken string) {
 	message := new(fbmodelsend.Letter)
 
 	attch := new(fbmodelsend.Attachment)
@@ -42,7 +42,7 @@ func SendImageMessage(url string, recipient string) {
 
 	message.Recipient.ID = recipient
 
-	if err := sendMessage(message, recipient); err != nil {
+	if err := sendMessage(message, recipient, accessToken); err != nil {
 		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the image message: " + err.Error())
 		return
 	}
@@ -51,7 +51,7 @@ func SendImageMessage(url string, recipient string) {
 /*
 SendAudioMessage - Sends audio message to a recipient on Facebook Messenger
 */
-func SendAudioMessage(url string, recipient string) {
+func SendAudioMessage(url string, recipient string, accessToken string) {
 	message := new(fbmodelsend.Letter)
 
 	attch := new(fbmodelsend.Attachment)
@@ -61,7 +61,7 @@ func SendAudioMessage(url string, recipient string) {
 
 	message.Recipient.ID = recipient
 
-	if err := sendMessage(message, recipient); err != nil {
+	if err := sendMessage(message, recipient, accessToken); err != nil {
 		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the audio message: " + err.Error())
 		return
 	}
@@ -70,7 +70,7 @@ func SendAudioMessage(url string, recipient string) {
 /*
 SendTypingMessage - Sends typing message to user
 */
-func SendTypingMessage(onoff bool, recipient string) {
+func SendTypingMessage(onoff bool, recipient string, accessToken string) {
 	senderAction := new(fbmodelsend.SenderAction)
 	senderAction.Recipient.ID = recipient
 	if onoff {
@@ -78,7 +78,7 @@ func SendTypingMessage(onoff bool, recipient string) {
 	} else {
 		senderAction.SenderActionState = "typing_off"
 	}
-	if err := sendMessage(senderAction, recipient); err != nil {
+	if err := sendMessage(senderAction, recipient, accessToken); err != nil {
 		fmt.Print("[sendImageMessage] Error during the call to Facebook to send the typing message: " + err.Error())
 		return
 	}
@@ -88,7 +88,7 @@ func SendTypingMessage(onoff bool, recipient string) {
 SendGenericTemplateMessage - Sends a generic rich message to Facebook user.
 It can include text, buttons, URLs Butttons, lists to reply
 */
-func SendGenericTemplateMessage(template []*fbmodelsend.TemplateElement, recipient string) {
+func SendGenericTemplateMessage(template []*fbmodelsend.TemplateElement, recipient string, accessToken string) {
 	msg := new(fbmodelsend.Letter)
 	msg.Recipient.ID = recipient
 
@@ -99,7 +99,7 @@ func SendGenericTemplateMessage(template []*fbmodelsend.TemplateElement, recipie
 
 	msg.Message.Attachment = attch
 
-	if err := sendMessage(msg, recipient); err != nil {
+	if err := sendMessage(msg, recipient, accessToken); err != nil {
 		fmt.Print("[SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
@@ -109,7 +109,7 @@ func SendGenericTemplateMessage(template []*fbmodelsend.TemplateElement, recipie
 SendButtonMessage - Sends a generic rich message to Facebook user.
 It can include text, buttons, URLs Butttons, lists to reply
 */
-func SendButtonMessage(template []*fbmodelsend.Button, text string, recipient string) {
+func SendButtonMessage(template []*fbmodelsend.Button, text string, recipient string, accessToken string) {
 	msg := new(fbmodelsend.Letter)
 	msg.Recipient.ID = recipient
 
@@ -121,7 +121,7 @@ func SendButtonMessage(template []*fbmodelsend.Button, text string, recipient st
 
 	msg.Message.Attachment = attch
 
-	if err := sendMessage(msg, recipient); err != nil {
+	if err := sendMessage(msg, recipient, accessToken); err != nil {
 		fmt.Print("[sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
@@ -130,7 +130,7 @@ func SendButtonMessage(template []*fbmodelsend.Button, text string, recipient st
 /*
 SendURLButtonMessage - Sends a message with a button that redirects the user to an external web page.
 */
-func SendURLButtonMessage(text string, buttonTitle string, URL string, recipient string) {
+func SendURLButtonMessage(text string, buttonTitle string, URL string, recipient string, accessToken string) {
 
 	msgElement := new(fbmodelsend.TemplateElement)
 	msgElement.Title = text
@@ -144,13 +144,13 @@ func SendURLButtonMessage(text string, buttonTitle string, URL string, recipient
 
 	msgElement.Buttons = buttons
 	elements := []*fbmodelsend.TemplateElement{msgElement}
-	SendGenericTemplateMessage(elements, recipient)
+	SendGenericTemplateMessage(elements, recipient, accessToken)
 }
 
 /*
 SendShareMessage sends the message along with Share Button
 */
-func SendShareMessage(text string, subtitle string, recipient string) {
+func SendShareMessage(text string, subtitle string, recipient string, accessToken string) {
 
 	msgElement := new(fbmodelsend.TemplateElement)
 	msgElement.Title = text
@@ -162,20 +162,20 @@ func SendShareMessage(text string, subtitle string, recipient string) {
 
 	msgElement.Buttons = buttons
 	elements := []*fbmodelsend.TemplateElement{msgElement}
-	SendGenericTemplateMessage(elements, recipient)
+	SendGenericTemplateMessage(elements, recipient, accessToken)
 
 }
 
 /*
 SendQuickReply sends small messages in order to get small and quick answers from the users
 */
-func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient string) {
+func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient string, accessToken string) {
 	msg := new(fbmodelsend.Letter)
 	msg.Recipient.ID = recipient
 	msg.Message.Text = text
 	msg.Message.QuickReplies = options
 	//log.Printf("[SendQuickReply] Enviado: [%s]\n", text)
-	if err := sendMessage(msg, recipient); err != nil {
+	if err := sendMessage(msg, recipient, accessToken); err != nil {
 		log.Print("[SendQuickReply] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
@@ -184,19 +184,19 @@ func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient st
 /*
 SendAskUserLocation sends small message asking the users their location
 */
-func SendAskUserLocation(text string, recipient string) {
+func SendAskUserLocation(text string, recipient string, accessToken string) {
 	qr := new(fbmodelsend.QuickReply)
 	qr.ContentType = "location"
 
 	arrayQr := []*fbmodelsend.QuickReply{qr}
 
-	SendQuickReply(text, arrayQr, recipient)
+	SendQuickReply(text, arrayQr, recipient, accessToken)
 }
 
 /*
 Send Message - Sends a generic message to Facebook Messenger
 */
-func sendMessage(message interface{}, recipient string) error {
+func sendMessage(message interface{}, recipient string, accessToken string) error {
 
 	if logLevelDebug {
 		scs := spew.ConfigState{Indent: "\t"}
@@ -204,7 +204,7 @@ func sendMessage(message interface{}, recipient string) error {
 		return nil
 	}
 
-	url := "https://graph.facebook.com/v2.8/me/messages?access_token=" + fbAccessToken
+	url := "https://graph.facebook.com/v2.8/me/messages?access_token=" + accessToken
 
 	data, err := json.Marshal(message)
 	if err != nil {
