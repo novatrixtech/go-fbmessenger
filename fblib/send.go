@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/davecgh/go-spew/spew"
 
@@ -204,7 +205,12 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 		return nil
 	}
 
-	url := "https://graph.facebook.com/v2.8/me/messages?access_token=" + accessToken
+	var url string
+	if strings.Contains(accessToken, "http") {
+		url = accessToken
+	} else {
+		url = "https://graph.facebook.com/v2.8/me/messages?access_token=" + accessToken
+	}
 
 	data, err := json.Marshal(message)
 	if err != nil {
