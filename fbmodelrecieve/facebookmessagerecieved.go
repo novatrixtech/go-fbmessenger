@@ -15,6 +15,11 @@ type FacebookMessageRecieved struct {
 			Recipient struct {
 				ID string `json:"id"`
 			} `json:"recipient"`
+			Referral struct {
+				Value  string `json:"ref"`
+				Source string `json:"source"`
+				Type   string `json:"type"`
+			} `json:"referral"`
 			//Testar colocar todos os campos e ver se o Macaron faz o bind e deixa nulo
 			//quando nao tiver esse dado
 			Timestamp int64 `json:"timestamp"`
