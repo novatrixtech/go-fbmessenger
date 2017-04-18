@@ -168,7 +168,7 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 }
 
 /*
-SendShareMessage sends the message along with Share Button
+SendShareContent share rich content media and url button
 */
 func SendShareContent(title string, subtitle string, buttonTitle string, imageURL string, destinationURL string, recipient string, accessToken string) {
 
