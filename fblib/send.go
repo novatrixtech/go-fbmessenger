@@ -172,11 +172,11 @@ SendShareContent share rich content media and url button
 */
 func SendShareContent(title string, subtitle string, buttonTitle string, imageURL string, destinationURL string, recipient string, accessToken string) {
 
-	btnElementButton := new(fbmodelsend.Button)
+	btnElementButton := new(fbmodelsend.ButtonSharedContent)
 	btnElementButton.ButtonType = "web_url"
 	btnElementButton.URL = destinationURL
 	btnElementButton.Title = buttonTitle
-	buttonsElementButton := []*fbmodelsend.Button{btnElementButton}
+	buttonsElementButton := []*fbmodelsend.ButtonSharedContent{btnElementButton}
 
 	btnElement := new(fbmodelsend.TemplateElementShareContent)
 	btnElement.Title = title
