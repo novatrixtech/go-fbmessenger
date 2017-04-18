@@ -178,14 +178,14 @@ func SendShareContent(title string, subtitle string, buttonTitle string, imageUR
 	btnElementButton.Title = buttonTitle
 	buttonsElementButton := []*fbmodelsend.Button{btnElementButton}
 
-	btnElement := new(fbmodelsend.TemplateElement)
+	btnElement := new(fbmodelsend.TemplateElementShareContent)
 	btnElement.Title = title
 	btnElement.Subtitle = subtitle
 	btnElement.ImageURL = imageURL
 	btnElement.DefaultAction.Type = "web_url"
 	btnElement.DefaultAction.URL = destinationURL
 	btnElement.Buttons = buttonsElementButton
-	elementsButtonElement := []*fbmodelsend.TemplateElement{btnElement}
+	elementsButtonElement := []*fbmodelsend.TemplateElementShareContent{btnElement}
 
 	opt1 := new(fbmodelsend.Button)
 	opt1.ButtonType = "element_share"
