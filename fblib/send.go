@@ -151,10 +151,10 @@ func SendURLButtonMessage(text string, buttonTitle string, URL string, recipient
 /*
 SendShareMessage sends the message along with Share Button
 */
-func SendShareMessage(text string, subtitle string, recipient string, accessToken string) {
+func SendShareMessage(title string, subtitle string, recipient string, accessToken string) {
 
 	msgElement := new(fbmodelsend.TemplateElement)
-	msgElement.Title = text
+	msgElement.Title = title
 	msgElement.Subtitle = subtitle
 
 	opt1 := new(fbmodelsend.Button)
