@@ -168,6 +168,42 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 }
 
 /*
+SendShareMessage sends the message along with Share Button
+*/
+func SendShareContent(title string, subtitle string, buttonTitle string, imageURL string, destinationURL string, recipient string, accessToken string) {
+
+	btnElementButton := new(fbmodelsend.Button)
+	btnElementButton.ButtonType = "web_url"
+	btnElementButton.URL = destinationURL
+	btnElementButton.Title = buttonTitle
+	buttonsElementButton := []*fbmodelsend.Button{btnElementButton}
+
+	btnElement := new(fbmodelsend.TemplateElement)
+	btnElement.Title = title
+	btnElement.Subtitle = subtitle
+	btnElement.ImageURL = imageURL
+	btnElement.DefaultAction.Type = "web_url"
+	btnElement.DefaultAction.URL = destinationURL
+	btnElement.Buttons = buttonsElementButton
+	elementsButtonElement := []*fbmodelsend.TemplateElement{btnElement}
+
+	opt1 := new(fbmodelsend.Button)
+	opt1.ButtonType = "element_share"
+	opt1.ShareContents.Attachment.Type = "template"
+	opt1.ShareContents.Attachment.Payload.TemplateType = "generic"
+	opt1.ShareContents.Attachment.Payload.Elements = elementsButtonElement
+	buttons := []*fbmodelsend.Button{opt1}
+
+	msgElement := new(fbmodelsend.TemplateElement)
+	msgElement.Title = title
+	msgElement.Subtitle = subtitle
+	msgElement.Buttons = buttons
+	elements := []*fbmodelsend.TemplateElement{msgElement}
+	SendGenericTemplateMessage(elements, recipient, accessToken)
+
+}
+
+/*
 SendQuickReply sends small messages in order to get small and quick answers from the users
 */
 func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient string, accessToken string) {
