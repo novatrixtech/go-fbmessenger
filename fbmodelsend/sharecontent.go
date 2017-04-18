@@ -8,7 +8,7 @@ type ShareContents struct {
 		Type    string `json:"type"`
 		Payload struct {
 			TemplateType string             `json:"template_type"`
-			Elements     *[]TemplateElement `json:"elements"`
+			Elements     []*TemplateElement `json:"elements"`
 		} `json:"payload"`
 	} `json:"attachment"`
 }
