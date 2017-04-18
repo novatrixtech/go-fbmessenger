@@ -171,36 +171,36 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 SendShareContent share rich content media and url button
 */
 func SendShareContent(title string, subtitle string, buttonTitle string, imageURL string, destinationURL string, recipient string, accessToken string) {
+	/*
+		btnElementButton := new(fbmodelsend.ButtonSharedContent)
+		btnElementButton.ButtonType = "web_url"
+		btnElementButton.URL = destinationURL
+		btnElementButton.Title = buttonTitle
+		buttonsElementButton := []*fbmodelsend.ButtonSharedContent{btnElementButton}
 
-	btnElementButton := new(fbmodelsend.ButtonSharedContent)
-	btnElementButton.ButtonType = "web_url"
-	btnElementButton.URL = destinationURL
-	btnElementButton.Title = buttonTitle
-	buttonsElementButton := []*fbmodelsend.ButtonSharedContent{btnElementButton}
+		btnElement := new(fbmodelsend.TemplateElementShareContent)
+		btnElement.Title = title
+		btnElement.Subtitle = subtitle
+		btnElement.ImageURL = imageURL
+		btnElement.DefaultAction.Type = "web_url"
+		btnElement.DefaultAction.URL = destinationURL
+		btnElement.Buttons = buttonsElementButton
+		elementsButtonElement := []*fbmodelsend.TemplateElementShareContent{btnElement}
 
-	btnElement := new(fbmodelsend.TemplateElementShareContent)
-	btnElement.Title = title
-	btnElement.Subtitle = subtitle
-	btnElement.ImageURL = imageURL
-	btnElement.DefaultAction.Type = "web_url"
-	btnElement.DefaultAction.URL = destinationURL
-	btnElement.Buttons = buttonsElementButton
-	elementsButtonElement := []*fbmodelsend.TemplateElementShareContent{btnElement}
+		opt1 := new(fbmodelsend.Button)
+		opt1.ButtonType = "element_share"
+		opt1.ShareContents.Attachment.Type = "template"
+		opt1.ShareContents.Attachment.Payload.TemplateType = "generic"
+		opt1.ShareContents.Attachment.Payload.Elements = elementsButtonElement
+		buttons := []*fbmodelsend.Button{opt1}
 
-	opt1 := new(fbmodelsend.Button)
-	opt1.ButtonType = "element_share"
-	opt1.ShareContents.Attachment.Type = "template"
-	opt1.ShareContents.Attachment.Payload.TemplateType = "generic"
-	opt1.ShareContents.Attachment.Payload.Elements = elementsButtonElement
-	buttons := []*fbmodelsend.Button{opt1}
-
-	msgElement := new(fbmodelsend.TemplateElement)
-	msgElement.Title = title
-	msgElement.Subtitle = subtitle
-	msgElement.Buttons = buttons
-	elements := []*fbmodelsend.TemplateElement{msgElement}
-	SendGenericTemplateMessage(elements, recipient, accessToken)
-
+		msgElement := new(fbmodelsend.TemplateElement)
+		msgElement.Title = title
+		msgElement.Subtitle = subtitle
+		msgElement.Buttons = buttons
+		elements := []*fbmodelsend.TemplateElement{msgElement}
+		SendGenericTemplateMessage(elements, recipient, accessToken)
+	*/
 }
 
 /*
