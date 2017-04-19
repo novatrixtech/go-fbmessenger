@@ -168,39 +168,59 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 }
 
 /*
+DefaultAction struct {
+Type string `json:"type"`
+URL  string `json:"url"`
+} `json:"default_action"`
+*/
+
+/*
 SendShareContent share rich content media and url button
 */
-func SendShareContent(title string, subtitle string, buttonTitle string, imageURL string, destinationURL string, recipient string, accessToken string) {
-	/*
-		btnElementButton := new(fbmodelsend.ButtonSharedContent)
-		btnElementButton.ButtonType = "web_url"
-		btnElementButton.URL = destinationURL
-		btnElementButton.Title = buttonTitle
-		buttonsElementButton := []*fbmodelsend.ButtonSharedContent{btnElementButton}
+func SendShareContent(titleToSender string, subtitleToSender string, imageURLToSender string, titleToRecipient string, subtitleToRecipient string, buttonTitleToRecipient string, imageURLToRecipient string, destinationURL string, recipient string, accessToken string) {
 
-		btnElement := new(fbmodelsend.TemplateElementShareContent)
-		btnElement.Title = title
-		btnElement.Subtitle = subtitle
-		btnElement.ImageURL = imageURL
-		btnElement.DefaultAction.Type = "web_url"
-		btnElement.DefaultAction.URL = destinationURL
-		btnElement.Buttons = buttonsElementButton
-		elementsButtonElement := []*fbmodelsend.TemplateElementShareContent{btnElement}
+	btnRecipient := new(fbmodelsend.Button)
+	btnRecipient.ButtonType = "web_url"
+	btnRecipient.Title = buttonTitleToRecipient
+	btnRecipient.URL = destinationURL
+	arrBtnRecipient := []*fbmodelsend.Button{btnRecipient}
 
-		opt1 := new(fbmodelsend.Button)
-		opt1.ButtonType = "element_share"
-		opt1.ShareContents.Attachment.Type = "template"
-		opt1.ShareContents.Attachment.Payload.TemplateType = "generic"
-		opt1.ShareContents.Attachment.Payload.Elements = elementsButtonElement
-		buttons := []*fbmodelsend.Button{opt1}
+	elementRecipient := new(fbmodelsend.TemplateElement)
+	elementRecipient.Title = titleToRecipient
+	elementRecipient.Subtitle = subtitleToRecipient
+	elementRecipient.ImageURL = imageURLToRecipient
+	elementRecipient.Buttons = arrBtnRecipient
+	arrElementRecipient := []*fbmodelsend.TemplateElement{elementRecipient}
 
-		msgElement := new(fbmodelsend.TemplateElement)
-		msgElement.Title = title
-		msgElement.Subtitle = subtitle
-		msgElement.Buttons = buttons
-		elements := []*fbmodelsend.TemplateElement{msgElement}
-		SendGenericTemplateMessage(elements, recipient, accessToken)
-	*/
+	btnSender := new(fbmodelsend.ButtonSharedContent)
+	btnSender.ButtonType = "element_share"
+	btnSender.ShareContents.Attachment.AttachmentType = "template"
+	btnSender.ShareContents.Attachment.Payload.TemplateType = "generic"
+	btnSender.ShareContents.Attachment.Payload.Elements = arrElementRecipient
+	arrBtnSender := []*fbmodelsend.ButtonSharedContent{btnSender}
+
+	elementSender := new(fbmodelsend.TemplateElementShareContent)
+	elementSender.Title = titleToSender
+	elementSender.Subtitle = subtitleToSender
+	elementSender.ImageURL = imageURLToSender
+	elementSender.Buttons = arrBtnSender
+	arrElementSender := []*fbmodelsend.TemplateElementShareContent{elementSender}
+
+	attch := new(fbmodelsend.SharedAttachment)
+	attch.AttachmentType = "template"
+	attch.Payload.TemplateType = "generic"
+	attch.Payload.Elements = arrElementSender
+
+	si := new(fbmodelsend.SharedInvite)
+	si.Recipient.ID = recipient
+	si.Message.Attachment = attch
+
+	if err := sendMessage(si, recipient, accessToken); err != nil {
+		fmt.Print("[SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		return
+	}
+	//sendMessageTemp(msg, recipient, accessToken)
+	sendMessage(si, recipient, accessToken)
 }
 
 /*
@@ -278,6 +298,53 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 		fmt.Println("[sendMessage] Response Body from Facebook: ", status)
 		fmt.Printf("[sendMessage] Facebook URL Called: [%s]\n", url)
 		fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", string(data))
+	}
+
+	return nil
+}
+
+/*
+Send Message - Sends a generic message to Facebook Messenger
+*/
+func sendMessageTemp(message string, recipient string, accessToken string) error {
+
+	if logLevelDebug {
+		scs := spew.ConfigState{Indent: "\t"}
+		scs.Dump(message)
+		return nil
+	}
+
+	var url string
+	if strings.Contains(accessToken, "http") {
+		url = accessToken
+	} else {
+		url = "https://graph.facebook.com/v2.8/me/messages?access_token=" + accessToken
+	}
+
+	reqFb, _ := http.NewRequest("POST", url, bytes.NewBuffer([]byte(message)))
+	reqFb.Header.Set("Content-Type", "application/json")
+	reqFb.Header.Set("Connection", "close")
+	reqFb.Close = true
+
+	client := &http.Client{}
+
+	//fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
+
+	respFb, err := client.Do(reqFb)
+	if err != nil {
+		fmt.Print("[sendMessage] Error during the call to Facebook to send the message: " + err.Error())
+		return err
+	}
+	defer respFb.Body.Close()
+
+	if respFb.StatusCode < 200 || respFb.StatusCode >= 300 {
+		bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
+		status := string(bodyFromFb)
+		fmt.Printf("[sendMessage] Response status code: [%d]\n", respFb.StatusCode)
+		fmt.Println("[sendMessage] Response status: ", respFb.Status)
+		fmt.Println("[sendMessage] Response Body from Facebook: ", status)
+		fmt.Printf("[sendMessage] Facebook URL Called: [%s]\n", url)
+		fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", message)
 	}
 
 	return nil

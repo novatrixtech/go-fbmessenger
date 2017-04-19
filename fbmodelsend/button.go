@@ -15,8 +15,5 @@ ButtonSharedContent - Button to be used as a reply option within a FB Share Cont
 */
 type ButtonSharedContent struct {
 	ButtonType    string        `json:"type,omitempty"`
-	Title         string        `json:"title,omitempty"`
-	Payload       string        `json:"payload,omitempty"`
-	URL           string        `json:"url,omitempty"`
 	ShareContents ShareContents `json:"share_contents,omitempty"`
 }
