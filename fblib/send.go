@@ -219,8 +219,6 @@ func SendShareContent(titleToSender string, subtitleToSender string, imageURLToS
 		fmt.Print("[SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
-	//sendMessageTemp(msg, recipient, accessToken)
-	sendMessage(si, recipient, accessToken)
 }
 
 /*
@@ -298,53 +296,6 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 		fmt.Println("[sendMessage] Response Body from Facebook: ", status)
 		fmt.Printf("[sendMessage] Facebook URL Called: [%s]\n", url)
 		fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", string(data))
-	}
-
-	return nil
-}
-
-/*
-Send Message - Sends a generic message to Facebook Messenger
-*/
-func sendMessageTemp(message string, recipient string, accessToken string) error {
-
-	if logLevelDebug {
-		scs := spew.ConfigState{Indent: "\t"}
-		scs.Dump(message)
-		return nil
-	}
-
-	var url string
-	if strings.Contains(accessToken, "http") {
-		url = accessToken
-	} else {
-		url = "https://graph.facebook.com/v2.8/me/messages?access_token=" + accessToken
-	}
-
-	reqFb, _ := http.NewRequest("POST", url, bytes.NewBuffer([]byte(message)))
-	reqFb.Header.Set("Content-Type", "application/json")
-	reqFb.Header.Set("Connection", "close")
-	reqFb.Close = true
-
-	client := &http.Client{}
-
-	//fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
-
-	respFb, err := client.Do(reqFb)
-	if err != nil {
-		fmt.Print("[sendMessage] Error during the call to Facebook to send the message: " + err.Error())
-		return err
-	}
-	defer respFb.Body.Close()
-
-	if respFb.StatusCode < 200 || respFb.StatusCode >= 300 {
-		bodyFromFb, _ := ioutil.ReadAll(respFb.Body)
-		status := string(bodyFromFb)
-		fmt.Printf("[sendMessage] Response status code: [%d]\n", respFb.StatusCode)
-		fmt.Println("[sendMessage] Response status: ", respFb.Status)
-		fmt.Println("[sendMessage] Response Body from Facebook: ", status)
-		fmt.Printf("[sendMessage] Facebook URL Called: [%s]\n", url)
-		fmt.Printf("[sendMessage] Object sent to Facebook: [%s]\n", message)
 	}
 
 	return nil
