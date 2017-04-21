@@ -50,7 +50,12 @@ type FacebookMessageRecieved struct {
 				} `json:"attachments"`
 			} `json:"message"`
 			Postback struct {
-				Payload string `json:"payload"`
+				Payload  string `json:"payload"`
+				Referral struct {
+					Value  string `json:"ref"`
+					Source string `json:"source"`
+					Type   string `json:"type"`
+				} `json:"referral"`
 			} `json:"postback"`
 		} `json:"messaging"`
 	} `json:"entry"`
