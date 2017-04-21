@@ -168,13 +168,6 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 }
 
 /*
-DefaultAction struct {
-Type string `json:"type"`
-URL  string `json:"url"`
-} `json:"default_action"`
-*/
-
-/*
 SendShareContent share rich content media and url button
 */
 func SendShareContent(titleToSender string, subtitleToSender string, imageURLToSender string, titleToRecipient string, subtitleToRecipient string, buttonTitleToRecipient string, imageURLToRecipient string, destinationURL string, recipient string, accessToken string) {
