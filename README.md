@@ -2,7 +2,8 @@
 The Go SDK for Facebook Messenger to build your own Bot.
 
 ## Important
-Defines your Facebook Messenger Access Token calling ```fblib.DefineAccessToken()```
+Don't forget to get the Page Access Token in Facebook Developer's Portal. You will use it to send messages.
+
 Create an endpoint to receive FB Messenger calls and validate it. Check this link out: <https://developers.facebook.com/docs/messenger-platform/guides/setup>
 
 ## Contributions
