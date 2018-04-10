@@ -31,11 +31,14 @@ type FacebookMessageRecieved struct {
 				Mids []string `json:"mids"`
 			} `json:"delivery"`
 			Message struct {
-				Mid         string `json:"mid"`
-				Seq         int    `json:"seq"`
-				Text        string `json:"text"`
-				IsEcho      bool   `json:"is_echo"`
-				AppID       int    `json:"app_id"`
+				Mid        string `json:"mid"`
+				Seq        int    `json:"seq"`
+				Text       string `json:"text"`
+				IsEcho     bool   `json:"is_echo"`
+				AppID      int    `json:"app_id"`
+				QuickReply struct {
+					Payload string `json:"payload"`
+				} `json:"quick_reply"`
 				Attachments []struct {
 					Type    string `json:"type"`
 					Title   string `json:"title"`
