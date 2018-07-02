@@ -9,6 +9,7 @@ In this case our mail company is Facebook
 */
 type Letter struct {
 	MessageType string    `json:"message_type"`
+	Tag         string    `json:"tag,omitempty"`
 	Recipient   Recipient `json:"recipient"`
 	Message     Message   `json:"message"`
 }
