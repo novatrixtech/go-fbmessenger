@@ -59,6 +59,22 @@ func SendTextMessage(text string, recipient string, accessToken string, msgType 
 	return
 }
 
+//SendPersonalFinanceUpdateMessage sends a Finance Update information to recipient
+func SendPersonalFinanceUpdateMessage(text string, recipient string, accessToken string) (err error) {
+	err = nil
+	letter := new(fbmodelsend.Letter)
+	letter.Message.Text = text
+	letter.Tag = "PERSONAL_FINANCE_UPDATE"
+	letter.Recipient.ID = recipient
+	letter.MessageType = defineMessageType(3)
+	err = sendMessage(letter, recipient, accessToken)
+	if err != nil {
+		//fmt.Print("[fblib][sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		return
+	}
+	return
+}
+
 /*
 SendImageMessage - Sends image message to a recipient on Facebook Messenger
 */
