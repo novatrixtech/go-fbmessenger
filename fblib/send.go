@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/davecgh/go-spew/spew"
 
@@ -53,7 +53,7 @@ func SendTextMessage(text string, recipient string, accessToken string, msgType 
 	letter.MessageType = defineMessageType(msgType)
 	err = sendMessage(letter, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -96,7 +96,7 @@ func SendAudioMessage(url string, recipient string, accessToken string, msgType 
 	message.Recipient.ID = recipient
 	err = sendMessage(message, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][sendImageMessage] Error during the call to Facebook to send the audio message: " + err.Error())
+		//fmt.Print("[fblib][sendImageMessage] Error during the call to Facebook to send the audio message: " + err.Error())
 		return
 	}
 	return
@@ -117,7 +117,7 @@ func SendTypingMessage(onoff bool, recipient string, accessToken string, msgType
 	}
 	err = sendMessage(senderAction, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][sendImageMessage] Error during the call to Facebook to send the typing message: " + err.Error())
+		//fmt.Print("[fblib][sendImageMessage] Error during the call to Facebook to send the typing message: " + err.Error())
 		return
 	}
 	return
@@ -141,7 +141,7 @@ func SendGenericTemplateMessage(template []*fbmodelsend.TemplateElement, recipie
 
 	err = sendMessage(msg, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -167,7 +167,7 @@ func SendButtonMessage(template []*fbmodelsend.Button, text string, recipient st
 
 	err = sendMessage(msg, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][sendTextMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -193,7 +193,7 @@ func SendURLButtonMessage(text string, buttonTitle string, URL string, recipient
 
 	err = SendGenericTemplateMessage(elements, recipient, accessToken, msgType)
 	if err != nil {
-		fmt.Print("[fblib][SendURLButtonMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][SendURLButtonMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -217,7 +217,7 @@ func SendShareMessage(title string, subtitle string, recipient string, accessTok
 
 	err = SendGenericTemplateMessage(elements, recipient, accessToken, msgType)
 	if err != nil {
-		fmt.Print("[fblib][SendShareMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][SendShareMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -268,7 +268,7 @@ func SendShareContent(titleToSender string, subtitleToSender string, imageURLToS
 
 	err = sendMessage(si, recipient, accessToken)
 	if err != nil {
-		fmt.Print("[fblib][SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
+		//fmt.Print("[fblib][SendGenericTemplateMessage] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -287,7 +287,7 @@ func SendQuickReply(text string, options []*fbmodelsend.QuickReply, recipient st
 	//log.Printf("[SendQuickReply] Enviado: [%s]\n", text)
 	err = sendMessage(msg, recipient, accessToken)
 	if err != nil {
-		log.Print("[fblib][SendQuickReply] Error during the call to Facebook to send the text message: " + err.Error())
+		//log.Print("[fblib][SendQuickReply] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -305,7 +305,7 @@ func SendAskUserLocation(text string, recipient string, accessToken string, msgT
 
 	err = SendQuickReply(text, arrayQr, recipient, accessToken, msgType)
 	if err != nil {
-		log.Print("[fblib][SendAskUserLocation] Error during the call to Facebook to send the text message: " + err.Error())
+		//log.Print("[fblib][SendAskUserLocation] Error during the call to Facebook to send the text message: " + err.Error())
 		return
 	}
 	return
@@ -331,7 +331,7 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 
 	data, err := json.Marshal(message)
 	if err != nil {
-		fmt.Print("[fblib][sendMessage] Error to convert message object: " + err.Error())
+		//fmt.Print("[fblib][sendMessage] Error to convert message object: " + err.Error())
 		return err
 	}
 
@@ -340,13 +340,15 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 	reqFb.Header.Set("Connection", "close")
 	reqFb.Close = true
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 30,
+	}
 
 	//fmt.Println("[sendMessage] Replying at: " + url + " the message " + string(data))
 
 	respFb, err := client.Do(reqFb)
 	if err != nil {
-		fmt.Print("[fblib][sendMessage] Error during the call to Facebook to send the message: " + err.Error())
+		//fmt.Print("[fblib][sendMessage] Error during the call to Facebook to send the message: " + err.Error())
 		return err
 	}
 	defer respFb.Body.Close()
