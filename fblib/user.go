@@ -2,6 +2,7 @@ package fblib
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -15,7 +16,7 @@ It can be obtained after she starts a conversation with Bot
 */
 func GetUserData(senderID string, accessToken string) (*fbmodelsend.User, error) {
 
-	url := fmt.Sprintf("https://graph.facebook.com/v3.0/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s",
+	url := fmt.Sprintf("https://graph.facebook.com/v3.0/%s?fields=first_name,last_name,profile_pic&access_token=%s",
 		senderID,
 		accessToken)
 	//fmt.Println("[GetUserData] URL: " + url)
@@ -41,6 +42,10 @@ func GetUserData(senderID string, accessToken string) (*fbmodelsend.User, error)
 
 	//respBody := string(data)
 	//fmt.Println("[GetUserData] Response: " + respBody)
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		err = errors.New("go-fbmessenger->GetUserData Error: " + string(data))
+		return nil, err
+	}
 
 	fbUser := new(fbmodelsend.User)
 
