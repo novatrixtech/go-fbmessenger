@@ -16,7 +16,7 @@ It can be obtained after she starts a conversation with Bot
 */
 func GetUserData(senderID string, accessToken string) (*fbmodelsend.User, error) {
 
-	url := fmt.Sprintf("https://graph.facebook.com/v3.0/%s?fields=first_name,last_name,profile_pic&access_token=%s",
+	url := fmt.Sprintf("https://graph.facebook.com/v6.0/%s?fields=first_name,last_name,profile_pic&access_token=%s",
 		senderID,
 		accessToken)
 	//fmt.Println("[GetUserData] URL: " + url)

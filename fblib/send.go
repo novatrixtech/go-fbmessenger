@@ -342,7 +342,7 @@ func sendMessage(message interface{}, recipient string, accessToken string) erro
 	if strings.Contains(accessToken, "http") {
 		url = accessToken
 	} else {
-		url = "https://graph.facebook.com/v2.12/me/messages?access_token=" + accessToken
+		url = "https://graph.facebook.com/v6.0/me/messages?access_token=" + accessToken
 	}
 
 	data, err := json.Marshal(message)
